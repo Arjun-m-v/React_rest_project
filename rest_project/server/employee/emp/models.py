@@ -8,3 +8,4 @@ class EmpModel(models.Model):
     phone=models.IntegerField()
     department=models.CharField(max_length=100)
     email=models.EmailField()
+

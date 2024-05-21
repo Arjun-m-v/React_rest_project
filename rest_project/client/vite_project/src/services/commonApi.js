@@ -9,3 +9,5 @@ const commonApi=(reqMethod,url,reqBody)=>{
     }
     return axios(config)
 }
+
+export default commonApi

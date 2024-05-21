@@ -1,16 +1,40 @@
 import { useState,React } from 'react';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
+import { addEmployee } from '../../services/allApi';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function Add() {
 
 const [ formData,setFormData ]=useState({
     name:"",age:"",email:"",phone:"",dept:""
 })
+const navigate=useNavigate()
 
 const handleSubmit = (e) => {
     e.preventDefault()
     console.log(formData);
+    const {name,age,email,phone,dept}=formData
+    if(!name || !age || !email || !phone || !dept){
+        toast.warning("invalid Inputs")
+    }
+    else{
+        const result=addEmployee({empname:name,age,email,phone,department:dept})
+        result.then(res=>{
+            toast.success("Employee Added Successfully")
+            setFormData({name:"",age:"",email:"",phone:"",dept:""})
+            navigate('/')
+        }).catch(err=>{
+            alert("Employee Addedd Failed!")
+            console.log(err);
+        })
+    }
+}
+
+const handleCancel=()=>{
+    setFormData({name:"",age:"",email:"",phone:"",dept:""})
+    navigate('/')
 }
 
   return (
@@ -36,7 +60,7 @@ const handleSubmit = (e) => {
                     </FloatingLabel>
                     <div className='text-center mt-2 d-flex justify-content-around'>
                         <button className='btn btn-primary' onClick={(e)=>handleSubmit(e)}>Submit</button>
-                        <button className='btn btn-danger' type='button'>Cancel</button>
+                        <button className='btn btn-danger'  onClick={(e)=>handleCancel(e)}>Cancel</button>
                     </div>
                 </form>
             </div>
